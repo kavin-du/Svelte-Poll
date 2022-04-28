@@ -13,45 +13,35 @@
     activeTab = e.detail;
   };
 
-  let polls = [
-    {
-      id: 1,
-      question: "Python or JavaScript?",
-      answerA: "Python",
-      answerB: "JavaScript",
-      votesA: 9,
-      votesB: 15,
-    },
-  ];
 
   const handleAdd = (e) => {
-    const poll = e.detail;
-    polls = [...polls, poll];
+    // const poll = e.detail;
+    // polls = [poll, ...polls]; // not getting data now bcz store
     activeTab = items[0];
   };
 
-	const handleVote = (e) => {
-		const { id, option } = e.detail;
+	// const handleVote = (e) => {
+	// 	const { id, option } = e.detail;
 
-		let copiedPolls = [...polls];
-		let upvotedPoll = copiedPolls.find(poll => poll.id === id);
+	// 	let copiedPolls = [...polls];
+	// 	let upvotedPoll = copiedPolls.find(poll => poll.id === id);
 
-		if(option === 'a') {
-			upvotedPoll.votesA++;
-		} else if(option === 'b') {
-			upvotedPoll.votesB++;
-		} 
+	// 	if(option === 'a') {
+	// 		upvotedPoll.votesA++;
+	// 	} else if(option === 'b') {
+	// 		upvotedPoll.votesB++;
+	// 	} 
 
-		// find only gives a reference, therefore directly modifying the array
-		polls = copiedPolls;
-	}
+	// 	// find only gives a reference, therefore directly modifying the array
+	// 	polls = copiedPolls;
+	// }
 </script>
 
 <Header />
 <main>
   <Tabs {activeTab} {items} on:tabChange={handleTabChange} />
   {#if activeTab === items[0]}
-    <PollList {polls} on:vote={handleVote} />
+    <PollList />
   {:else if activeTab === items[1]}
     <CreatePollForm on:add={handleAdd} />
   {/if}

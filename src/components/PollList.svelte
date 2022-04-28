@@ -1,13 +1,42 @@
 <script>
+// import { onDestroy, onMount } from 'svelte';
+
+  import PollStore from '../store/PollStore.js';
   import PollDetails from "./PollDetails.svelte";
 
-  export let polls = [];
-</script>
+  /* 
 
+  let polls = [];
+
+  // whenever store changes this callback executes
+  const unsubscribeThis = PollStore.subscribe(data => {
+    polls = data;
+  });
+
+
+  onMount(() => {
+    // get data from a db
+    console.log('mounted...');
+  });
+
+  onDestroy(() => {
+    // unsub from anything
+    console.log('destroyed...');
+    unsubscribeThis();
+  });
+
+  */
+
+
+
+</script>
+<!-- we directly access pollstore, so it will automatically 
+unmounted, no need hooks -->
 <div class="poll-list">
-  {#each polls as poll (poll.id)}
+  {#each $PollStore as poll (poll.id)}
     <!-- forward the event to parent, bcz polldetails not nested in app.svelte -->
-    <PollDetails {poll} on:vote />
+    <!-- <PollDetails {poll} on:vote /> no need to forward anymore bcz store -->
+    <PollDetails {poll} />
   {/each}
 </div>
 

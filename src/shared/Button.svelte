@@ -5,7 +5,7 @@
 </script>
 
 <!-- conditional classes, only apply class flat, if flat is true -->
-<button class={type} class:flat={flat} class:inverse={inverse}>
+<button class={type} class:flat={flat} class:inverse={inverse} on:click>
   <slot />
 </button>
 
