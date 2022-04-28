@@ -2,6 +2,7 @@
   import Card from "../shared/Card.svelte";
   import PollStore from '../store/PollStore';
   import Button from "../shared/Button.svelte";
+  import { tweened } from 'svelte/motion';
   // import {createEventDispatcher} from 'svelte';
 
   // const dispatch = createEventDispatcher();
@@ -9,8 +10,14 @@
 
   // reactive values
   $: totalVotes = poll.votesA + poll.votesB;
-  $: percentA = Math.floor((poll.votesA/totalVotes) * 100);
-  $: percentB = Math.floor((poll.votesB/totalVotes) * 100);
+  $: percentA = Math.floor((poll.votesA/totalVotes) * 100) || 0; // handling division by zero when animating
+  $: percentB = Math.floor((poll.votesB/totalVotes) * 100) || 0;
+
+  // tweend percentages 
+  const tweenedA = tweened(0); // initial values of tween
+  const tweenedB = tweened(0);
+  $: tweenedA.set(percentA);
+  $: tweenedB.set(percentB);
 
 
   const handleVotes = (option, id) => {
@@ -44,12 +51,13 @@
     <h3>{poll.question}</h3>
     <p>Total votes: {totalVotes}</p>
     <div class="answer" on:click={() => handleVotes('a', poll.id)}>
-      <div class="percent percent-a" style="width: {percentA}%" />
+      <!-- subscribing to non reactive value -->
+      <div class="percent percent-a" style="width: {$tweenedA}%" />
       <span>{poll.answerA} ({poll.votesA})</span>
     </div>
 
     <div class="answer" on:click={() => handleVotes('b', poll.id)}>
-      <div class="percent percent-b" style="width: {percentB}%" />
+      <div class="percent percent-b" style="width: {$tweenedB}%" />
       <span>{poll.answerB} ({poll.votesB})</span>
     </div>
     <div class="delete">
